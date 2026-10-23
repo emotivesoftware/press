@@ -41,7 +41,7 @@
         - "TrustedUserCAKeys /etc/ssh/ca.pub"
         - "AuthorizedPrincipalsFile /etc/ssh/auth_principals/%u"
 
-- name: Restart sshd service
+- name: Reload ssh service
   service:
-    name: sshd
+    name: ssh  # 'sshd' is only an alias on jammy and does not exist on noble (socket-activated ssh.service)
     state: reloaded
