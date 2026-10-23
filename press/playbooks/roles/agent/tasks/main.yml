@@ -18,6 +18,13 @@
     virtualenv_python: python3
     editable: yes
 
+- name: Pin setuptools below 81 in the Agent env (Jinja2 2.x needs pkg_resources, removed in setuptools 81)
+  become: yes
+  become_user: frappe
+  pip:
+    name: setuptools<81
+    virtualenv: /home/frappe/agent/env
+
 - name: Generate Agent Configuration File
   become: yes
   become_user: frappe
