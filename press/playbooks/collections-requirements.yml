@@ -1,0 +1,9 @@
+# Collections the playbooks need under ansible-core (the old 'ansible' 3.4.0 meta-package bundled them).
+# Install into the bench env: ./env/bin/ansible-galaxy collection install -r apps/press/press/playbooks/collections-requirements.yml
+collections:
+  - name: community.mysql
+    version: 5.0.2
+  - name: community.general
+    version: 13.5.0
+  - name: ansible.posix
+    version: 2.2.2

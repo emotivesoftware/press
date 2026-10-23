@@ -67,5 +67,5 @@
 
 - name: Restart SSHD service
   service:
-    name: sshd
+    name: ssh  # 'sshd' alias does not exist on noble
     state: reloaded
