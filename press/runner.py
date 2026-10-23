@@ -229,6 +229,21 @@ class Ansible:
 			ssh_common_args=self._get_ssh_proxy_commad(server),
 		)
 
+		# ansible-core >= 2.12 memoises load_extra_vars()/load_options_vars() on the
+		# function object for the life of the process, so every play after the first
+		# in a worker would silently reuse the first play's variables. Drop the memo
+		# so this play's CLIARGS are read.
+		try:
+			from ansible.utils import vars as _ansible_vars
+
+			for _fn, _attr in (
+				(_ansible_vars.load_extra_vars, "extra_vars"),
+				(_ansible_vars.load_options_vars, "options_vars"),
+			):
+				if hasattr(_fn, _attr):
+					delattr(_fn, _attr)
+		except Exception:
+			pass
 		self.loader = DataLoader()
 		self.passwords = dict({})
 
