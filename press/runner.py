@@ -206,6 +206,15 @@ class Ansible:
 		# Every playbook gets the provider, so templates don't depend on the caller passing it
 		self.variables = {"cloud_provider": server.get("provider") or ""} | (variables or {})
 
+		# ansible-core >= 2.15 requires the plugin loader (collection finder) to be
+		# initialised before playbooks/roles are loaded through the Python API;
+		# the CLI does this itself, library callers must do it explicitly.
+		try:
+			from ansible.plugins.loader import init_plugin_loader
+
+			init_plugin_loader()
+		except ImportError:
+			pass  # ansible-base 2.10: no such function, nothing to do
 		constants.HOST_KEY_CHECKING = False
 		context.CLIARGS = ImmutableDict(
 			become_method="sudo",
